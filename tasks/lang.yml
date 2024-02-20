@@ -1,0 +1,44 @@
+- name: install node
+  become: true
+  apt: 
+    name: ['nodejs','npm'] 
+  tags:
+    - lang
+    - node
+- name: install nvm
+  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  tags:
+    - lang
+    - node
+- name: get architecture
+  shell: arch
+  register: arch
+  tags:
+    - core
+- name: get os
+  shell: uname -s
+  register: os
+  tags:
+    - core
+- name: Normalize architecture name
+  set_fact:
+    normalized_arch: "{{ 'arm64' if arch.stdout == 'aarch64' else 'amd64' }}"
+  tags:
+    - core
+- name: fetch the current Go version
+  shell: curl --silent https://go.dev/VERSION?m=text | head -n 1
+  register: go_latest
+  tags:
+    - lang
+    - go
+- name: download go
+  shell: curl -O https://dl.google.com/go/{{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
+  tags:
+    - lang
+    - go
+- name: install go
+  become: true
+  shell:  rm -rf /usr/local/go && tar -C /usr/local -xzf {{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
+  tags:
+    - lang
+    - go

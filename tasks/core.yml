@@ -1,0 +1,7 @@
+- name: install core tools
+  become: true
+  apt: 
+    name: ["ninja-build", "gettext", "cmake", "unzip", "curl", "wget", "jq"] 
+  tags:
+    - lang
+    - node

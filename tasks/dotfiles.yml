@@ -1,0 +1,14 @@
+- name: get dotfiles
+  ansible.builtin.git:
+    repo: 'https://github.com/yansol0/dotfiles'
+    dest: "{{ lookup('env', 'HOME') }}/dotfiles"
+  tags: 
+  - dotfiles
+- name: install gnu stow
+  apt: name=stow
+  tags: 
+  - dotfiles
+- name: stow each dotfile directory
+  shell: cd $HOME/dotfiles && stow --adopt .
+  tags:
+  - dotfiles
