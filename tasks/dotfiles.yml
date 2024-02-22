@@ -1,14 +1,19 @@
 - name: get dotfiles
+  become_user: solo
   ansible.builtin.git:
     repo: 'https://github.com/yansol0/dotfiles'
     dest: "{{ lookup('env', 'HOME') }}/dotfiles"
   tags: 
   - dotfiles
+
 - name: install gnu stow
+  become: true
   apt: name=stow
   tags: 
   - dotfiles
+
 - name: stow each dotfile directory
+  become_user: solo
   shell: cd $HOME/dotfiles && stow --adopt .
   tags:
   - dotfiles

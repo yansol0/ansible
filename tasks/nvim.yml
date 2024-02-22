@@ -1,29 +1,33 @@
-- name: remove neovim
-  shell: rm -rf ~/neovim
-  tags:
-    - nvim
 - name: get Packer
+  become_user: solo
   ansible.builtin.git:
     repo: 'https://github.com/wbthomason/packer.nvim'
     dest: "{{ lookup('env', 'HOME') }}/.local/share/nvim/site/pack/packer/start/packer.nvim"
   tags:
     - nvim
+
 - name: clone Neovim
+  become_user: solo
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
     dest: "{{ lookup('env', 'HOME') }}/neovim"
   tags:
     - nvim
+
 - name: build neovim
-  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20"
+  become: true
+  shell: "cd /home/solo/neovim && make -j 20"
   tags:
     - nvim
+
 - name: install neovim
   become: true
-  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make install"
+  shell: "cd /home/solo/neovim && make install"
   tags:
     - nvim
+
 - name: packer sync
   shell: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'source $HOME/dotfiles/.config/nvim/lua/boxman/packer.lua' -c 'PackerSync'  
+  become_user: solo
   tags:
     - nvim

@@ -1,0 +1,22 @@
+- name: fetch the current Go version
+  shell: curl --silent https://go.dev/VERSION?m=text | head -n 1
+  register: go_latest
+  tags:
+    - lang
+    - go
+
+- name: download installer
+  get_url:
+    url: https://dl.google.com/go/{{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
+    dest: /tmp/{{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
+    mode: '0755'
+    force: 'yes'
+  tags:
+    - lang
+    - go
+
+- name: install go
+  shell:  rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
+  tags:
+    - lang
+    - go

@@ -11,9 +11,14 @@
         - zsh
         - config
         - dotfiles
+        - rust
+        - go
+        - nvim
   tasks: 
-  - include: tasks/core.yml
-  - include: tasks/shell.yml
-  - include: tasks/lang.yml
-  - include: tasks/dotfiles.yml
-  - include: tasks/nvim.yml
+  - include_tasks: tasks/core.yml
+  - include_tasks: tasks/dotfiles.yml
+  - include_tasks: tasks/nvim.yml
+  - include_tasks: tasks/shell.yml
+  - include_tasks: tasks/go.yml
+  - include_tasks: tasks/rust.yml
+  - include_tasks: tasks/node.yml

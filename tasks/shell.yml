@@ -2,15 +2,27 @@
   apt: name=zsh
   tags: 
   - zsh
+
 - name: change shell
   shell: chsh -s `which zsh`
   tags: 
   - zsh
+
 - name: install oh-my-zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  become_user: solo
   tags: 
   - zsh
+
+- name: install zsh theme
+  become_user: solo
+  ansible.builtin.git:
+    repo: 'https://github.com/romkatv/powerlevel10k.git'
+    depth: 1
+    dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/themes/powerlevel10k"
+
 - name: install zsh autosuggestions
+  become_user: solo
   ansible.builtin.git:
     repo: 'https://github.com/zsh-users/zsh-autosuggestions'
     dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
