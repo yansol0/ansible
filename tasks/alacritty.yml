@@ -1,0 +1,67 @@
+- name: ensure dependencies are installed (Debian/Ubuntu)
+  apt:
+    name:
+      - cmake
+      - pkg-config
+      - libfreetype6-dev
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - libxkbcommon-dev
+      - python3
+    state: present
+
+- name: check if rust is installed
+  shell: rustc --version
+  register: rust_exists
+  ignore_errors: yes
+
+- name: instal rust if not already present
+  include_tasks: rust.yml
+  when: rust_exists is failed
+
+- name: set rust to stable
+  become_user: solo
+  shell: |
+    . $HOME/.cargo/env
+    rustup override set stable
+    rustup update stable
+
+- name: clone alacritty repository
+  become: true
+  git:
+    repo: https://github.com/alacritty/alacritty.git
+    dest: /opt/alacritty
+
+- name: change ownership to solo
+  become: true
+  command: chown -R solo:solo /opt/alacritty
+
+- name: build alacritty
+  become_user: solo
+  shell: |
+    . /home/solo/.cargo/env
+    cd /opt/alacritty
+    cargo build --release
+
+- name: change ownership back to root
+  become: true
+  command: chown -R root:root /opt/alacritty
+
+- name: install alacritty binary
+  copy:
+    src: /opt/alacritty/target/release/alacritty
+    dest: /usr/local/bin/alacritty
+    mode: '0755'
+
+- name: install alacritty terminfo
+  shell: |
+    sudo tic -xe alacritty,alacritty-direct /opt/alacritty/extra/alacritty.info
+
+- name: install alacritty manual pages
+  shell: |
+    sudo mkdir -p /usr/local/share/man/man1
+    sudo mkdir -p /usr/local/share/man/man5
+    sudo scdoc < /opt/alacritty/extra/man/alacritty.1.scd | gzip -c | sudo tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
+    sudo scdoc < /opt/alacritty/extra/man/alacritty-msg.1.scd | gzip -c | sudo tee /usr/local/share/man/man1/alacritty-msg.1.gz > /dev/null
+    sudo scdoc < /opt/alacritty/extra/man/alacritty.5.scd | gzip -c | sudo tee /usr/local/share/man/man5/alacritty.5.gz > /dev/null
+    sudo scdoc < /opt/alacritty/extra/man/alacritty-bindings.5.scd | gzip -c | sudo tee /usr/local/share/man/man5/alacritty-bindings.5.gz > /dev/null
