@@ -1,0 +1,22 @@
+- hosts: localhost
+  become: true
+  pre_tasks:
+    - name: Update cache
+      become: true
+      apt: 
+        force_apt_get: true
+        update_cache: true
+      tags: 
+        - lang
+        - zsh
+        - config
+        - dotfiles
+        - rust
+        - go
+        - nvim
+  tasks: 
+  - include_tasks: tasks/core.yml
+  - include_tasks: tasks/go.yml
+  - include_tasks: tasks/tools.yml
+  - include_tasks: tasks/rust.yml
+  - include_tasks: tasks/node.yml

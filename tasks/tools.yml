@@ -1,0 +1,47 @@
+- name: check if go is installed
+  become_user: solo
+  shell: . /home/solo/.profile && go version
+  register: go_exists
+  ignore_errors: yes
+
+- name: install go if not already present
+  include_tasks: go.yml
+  when: go_exists is failed
+
+- name: install amass
+  shell: . /home/solo/.profile && go install -v github.com/owasp-amass/amass/v4/...@master
+
+- name: install ffuf
+  shell: . /home/solo/.profile && go install github.com/ffuf/ffuf/v2@latest
+
+- name: install subfinder
+  shell: . /home/solo/.profile && go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+
+- name: install packages
+  apt:
+    pkg:
+      - ca-certificates
+      - curl
+      - apt-transport-https
+      - lsb-release
+      - gnupg
+      - software-properties-common
+      - python3-pip
+      - unzip
+      - tar
+      - tmux
+      - gobuster
+      - john
+      - hashcat
+      - nikto
+      - ruby-full
+      - ruby-railties
+      - hydra
+      - cewl
+      - whois
+      - squid
+      - nmap
+      - git
+      - python3-impacket
+    update_cache: true
+

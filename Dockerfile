@@ -22,5 +22,5 @@ USER solo
 WORKDIR /home/solo
 
 COPY . .
-CMD ["sh", "-c", "ansible-playbook $TAGS dev-local.yml"]
+CMD ["sh", "-c", "ansible-playbook $TAGS bb-remote.yml"]
 

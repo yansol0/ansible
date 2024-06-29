@@ -19,4 +19,4 @@
 - name: install core tools
   become: true
   apt: 
-    name: ["ninja-build", "gettext", "cmake", "unzip", "curl", "wget", "jq", "tmux", "fzf", "ripgrep"] 
+    name: ["ninja-build", "gettext", "cmake", "unzip", "curl", "wget", "jq", "tmux", "fzf", "ripgrep", "nmap", "tar", "whois", "git"] 
