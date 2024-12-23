@@ -7,8 +7,8 @@
 
 - name: download installer
   get_url:
-    url: https://dl.google.com/go/{{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
-    dest: /tmp/{{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
+    url: https://go.dev/dl/{{ go_latest.stdout }}.linux-amd64.tar.gz
+    dest: /tmp/{{ go_latest.stdout }}.linux-amd64.tar.gz
     mode: '0755'
     force: 'yes'
   tags:
@@ -16,15 +16,19 @@
     - go
 
 - name: install go
-  shell:  rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_latest.stdout }}.{{ os.stdout }}-{{ normalized_arch }}.tar.gz
+  shell:  rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_latest.stdout }}.linux-amd64.tar.gz
   tags:
     - lang
     - go
 
-- name: add go binary path to ~/.profile
+- name: ensure go binary path is in ~/.zshrc
   become_user: solo
   lineinfile:
-    path: ~/.profile
+    path: ~/.zshrc
     line: 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin'
+    regexp: '^export PATH=.*:/usr/local/go/bin:.*$'
     create: true
     state: present
+  tags:
+    - lang
+    - go

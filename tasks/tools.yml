@@ -43,5 +43,6 @@
       - nmap
       - git
       - python3-impacket
+      - gcc-multilib
     update_cache: true
 

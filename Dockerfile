@@ -1,4 +1,4 @@
-FROM ubuntu:jammy as base
+FROM ubuntu:jammy AS base
 ARG TAGS
 WORKDIR /usr/local/bin
 ARG DEBIAN_FRONTEND=noninteractive
@@ -22,5 +22,5 @@ USER solo
 WORKDIR /home/solo
 
 COPY . .
-CMD ["sh", "-c", "ansible-playbook $TAGS bb-remote.yml"]
+CMD ["sh", "-c", "ansible-playbook $TAGS dev-local.yml"]
 

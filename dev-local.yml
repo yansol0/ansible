@@ -16,10 +16,11 @@
         - nvim
   tasks: 
   - include_tasks: tasks/core.yml
-  - include_tasks: tasks/alacritty.yml
   - include_tasks: tasks/dotfiles.yml
-  - include_tasks: tasks/nvim.yml
   - include_tasks: tasks/shell.yml
+  - include_tasks: tasks/source.yml
+  - include_tasks: tasks/alacritty.yml
+  - include_tasks: tasks/nvim.yml
   - include_tasks: tasks/go.yml
   - include_tasks: tasks/rust.yml
   - include_tasks: tasks/node.yml

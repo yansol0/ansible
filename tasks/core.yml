@@ -1,21 +1,3 @@
-- name: get architecture
-  shell: arch
-  register: arch
-  tags:
-    - core
-
-- name: get os
-  shell: uname -s
-  register: os
-  tags:
-    - core
-
-- name: Normalize architecture name
-  set_fact:
-    normalized_arch: "{{ 'arm64' if arch.stdout == 'aarch64' else 'amd64' }}"
-  tags:
-    - core
-
 - name: install core tools
   become: true
   apt: 
