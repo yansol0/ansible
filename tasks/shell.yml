@@ -28,3 +28,8 @@
     dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
   tags: 
   - zsh
+
+- name: change default shell
+  ansible.builtin.user:
+    name: solo
+    shell: /bin/zsh
