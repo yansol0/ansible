@@ -19,13 +19,13 @@
   ansible.builtin.git:
     repo: 'https://github.com/romkatv/powerlevel10k.git'
     depth: 1
-    dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/themes/powerlevel10k"
+    dest: "/home/solo/.oh-my-zsh/themes/powerlevel10k"
 
 - name: install zsh autosuggestions
   become_user: solo
   ansible.builtin.git:
     repo: 'https://github.com/zsh-users/zsh-autosuggestions'
-    dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+    dest: "/home/solo/.oh-my-zsh/plugins/zsh-autosuggestions"
   tags: 
   - zsh
 
