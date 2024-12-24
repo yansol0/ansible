@@ -25,7 +25,7 @@
 - name: source cargo env 
   become_user: solo
   when: cargo_exists is failed
-  shell: . $HOME/.cargo/env
+  shell: . /home/solo/.cargo/env
   tags:
     - rust
     - lang

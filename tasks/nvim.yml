@@ -27,7 +27,7 @@
     - nvim
 
 - name: packer sync
-  shell: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'source $HOME/dotfiles/.config/nvim/lua/boxman/packer.lua' -c 'PackerSync'  
+  shell: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'source /home/solo/dotfiles/.config/nvim/lua/boxman/packer.lua' -c 'PackerSync'  
   become_user: solo
   tags:
     - nvim
