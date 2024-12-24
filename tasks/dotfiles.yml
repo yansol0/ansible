@@ -2,7 +2,7 @@
   become_user: solo
   ansible.builtin.git:
     repo: 'https://github.com/yansol0/dotfiles'
-    dest: "{{ lookup('env', 'HOME') }}/dotfiles"
+    dest: "/home/solo/dotfiles"
   tags: 
   - dotfiles
 
